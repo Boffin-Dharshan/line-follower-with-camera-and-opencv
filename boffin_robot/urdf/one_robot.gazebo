@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<robot>
+  <!-- Gazebo Materials -->
+  <gazebo reference="base_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference="lidar_support_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="lidar_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <gazebo reference="camera_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <gazebo reference="left_wheel_front">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+
+  <gazebo reference="left_wheel_back">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+
+  <gazebo reference="right_wheel_front">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+
+  <gazebo reference="right_wheel_back">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+
+  <!-- Joint State Publisher Plugin -->
+  <gazebo>
+    <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher">
+      <joint_name>base_wheel_left_front</joint_name>
+      <joint_name>base_wheel_left_back</joint_name>
+      <joint_name>base_wheel_right_front</joint_name>
+      <joint_name>base_wheel_right_back</joint_name>
+      <topic>/joint_states</topic>
+    </plugin>
+  </gazebo>
+
+  <!-- Pose Publisher Plugin for TF -->
+  <gazebo>
+    <plugin filename="libignition-gazebo-pose-publisher-system.so" name="ignition::gazebo::systems::PosePublisher">
+      <publish_link_pose>true</publish_link_pose>
+      <use_pose_vector_msg>true</use_pose_vector_msg>
+      <static_publisher>true</static_publisher>
+      <static_update_frequency>1</static_update_frequency>
+    </plugin>
+  </gazebo>
+
+  <!-- DiffDrive Plugin for 4-wheel drive - FIXED VERSION -->
+  <gazebo>
+    <plugin filename="libignition-gazebo-diff-drive-system.so" name="ignition::gazebo::systems::DiffDrive">
+      <!-- Left side wheels -->
+      <left_joint>base_wheel_left_front</left_joint>
+      <left_joint>base_wheel_left_back</left_joint>
+      <!-- Right side wheels -->
+      <right_joint>base_wheel_right_front</right_joint>
+      <right_joint>base_wheel_right_back</right_joint>
+      
+      <!-- Physical parameters -->
+      <wheel_separation>0.45</wheel_separation>
+      <wheel_radius>0.1</wheel_radius>
+      
+      <!-- Frame settings -->
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      
+      <!-- Topics -->
+      <odom_publish_frequency>30</odom_publish_frequency>
+      <odom_topic>/odom</odom_topic>
+      <topic>/cmd_vel</topic>
+      
+      <!-- Velocity limits -->
+      <max_linear_velocity>2.0</max_linear_velocity>
+      <min_linear_velocity>-2.0</min_linear_velocity>
+      <max_angular_velocity>2.0</max_angular_velocity>
+      <min_angular_velocity>-2.0</min_angular_velocity>
+      
+      <!-- Additional settings for better control -->
+      <max_wheel_torque>200</max_wheel_torque>
+      <max_wheel_acceleration>5.0</max_wheel_acceleration>
+    </plugin>
+  </gazebo>
+
+  <!-- Camera Plugin - FIXED FOR IGNITION -->
+  <gazebo reference="camera_link">
+    <sensor name="camera_sensor" type="camera">
+      <ignition_frame_id>camera_link</ignition_frame_id>
+      <topic>/robot/camera/image_raw</topic>
+      <camera_info_topic>/robot/camera/camera_info</camera_info_topic>
+      <trigger_topic>/robot/camera/trigger</trigger_topic>
+      <update_rate>30</update_rate>
+      
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      
+      <always_on>1</always_on>
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
+
+  <!-- Lidar Plugin - POINTCLOUD2 VERSION -->
+  <gazebo reference="lidar_link">
+    <sensor name="lidar_sensor" type="gpu_lidar">
+      <ignition_frame_id>lidar_link</ignition_frame_id>
+      <topic>/robot/points</topic>
+      <update_rate>10</update_rate>
+      
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>640</samples>
+            <resolution>1</resolution>
+            <min_angle>-1.396263</min_angle>
+            <max_angle>1.396263</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>16</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.261799</min_angle>
+            <max_angle>0.261799</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.08</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </lidar>
+      
+      <always_on>1</always_on>
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
+
+</robot>
