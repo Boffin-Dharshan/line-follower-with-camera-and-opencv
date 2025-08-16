@@ -16,28 +16,28 @@ Download this repository as a ZIP file
 Extract the contents
 
 ### Step2: Create a ROS2 Workspace:
-`mkdir -p ~/line_follower_ws/src`
-`cd ~/line_follower_ws`
+1. `mkdir -p ~/line_follower_ws/src`
+2. `cd ~/line_follower_ws`
 
 ### Step3: Add the Robot Package
 Copy the extracted boffin_robot folder into your workspace:
 
-`cp -r ~/Downloads/boffin_robot ~/line_follower_ws/src/`
+1. `cp -r ~/Downloads/boffin_robot ~/line_follower_ws/src/`
 
 ### Step4: Build & Source the Workspace
-`cd ~/line_follower_ws`
-`colcon build`
-`source install/setup.bash`
+1. `cd ~/line_follower_ws`
+2. `colcon build`
+3. `source install/setup.bash`
 
 ### Step5: Launch Gazebo with the Line Follower World
-`ros2 launch boffin_robot linefollower.launch.py`
+1. `ros2 launch boffin_robot linefollower.launch.py`
 
 👉 This opens Gazebo with a rectangular loop track.
 
 #### Step6: Make the Line Follower Script Executable
 Open new terminal 
-`cd ~/line_follower_ws`
-`chmod +x src/boffin_robot/src/line_follower.py`
+1. `cd ~/line_follower_ws`
+2. `chmod +x src/boffin_robot/src/line_follower.py`
 
 ### Step7: Run the Gazebo file
 Press the play button in Gazebo
